@@ -1,7 +1,6 @@
 # AdvertisingPlatformsWebService
 Веб-сервис рекламных площадок
 
-Обзор
 Это простой веб-сервис на ASP.NET Core для управления рекламными площадками по локациям, реализованный с использованием Razor Pages и REST API. Он поддерживает:
 1. POST /api/advertising/load: Загрузка текстового файла с рекламными площадками и их локациями (перезаписывает существующие данные).
 2. GET /api/advertising/search?location={path}: Получение списка рекламных площадок для заданной локации.
@@ -36,15 +35,15 @@
 
 2. API:
 
-POST /api/advertising/load: Загрузите файл с помощью curl: curl -X POST -F "file=@data.txt" http://localhost:5000/api/advertising/load
-GET /api/advertising/search: Запросите площадки для локации: curl http://localhost:5000/api/advertising/search?location=/ru/svrd/revda
+1. POST /api/advertising/load: Загрузите файл с помощью curl: curl -X POST -F "file=@data.txt" http://localhost:5000/api/advertising/load
+2. GET /api/advertising/search: Запросите площадки для локации: curl http://localhost:5000/api/advertising/search?location=/ru/svrd/revda
 
 Формат файла
 
 Входной файл должен содержать строки в формате: НазваниеПлатформы:Локация1,Локация2,...
 
 Пример: 
-  Яндекс.Директ:/ru 
-  Ревдинский рабочий:/ru/svrd/revda,/ru/svrd/pervik 
-  Газета уральских москвичей:/ru/msk,/ru/permobl,/ru/chelobl 
-  Крутая реклама:/ru/svrd
+1. Яндекс.Директ:/ru 
+2. Ревдинский рабочий:/ru/svrd/revda,/ru/svrd/pervik 
+3. Газета уральских москвичей:/ru/msk,/ru/permobl,/ru/chelobl 
+4. Крутая реклама:/ru/svrd
