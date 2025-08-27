@@ -15,8 +15,8 @@
 Как запустить
 
 Склонируйте репозиторий:
-1. git clone <repository-url>
-1. cd <repository-directory>
+1. git clone https://github.com/V1adic/AdvertisingPlatformsWebService repository-directory
+1. cd repository-directory
 
 Восстановите зависимости и выполните сборку: 
 1. dotnet restore
@@ -27,13 +27,14 @@
 
 Откройте браузер и перейдите по адресу http://localhost:5000 (или порт, указанный в консоли).
 
-Веб-интерфейс:
+1. Веб-интерфейс:
 
 Загрузка данных: Перетащите .txt файл в зону загрузки или выберите его через поле ввода. Формат файла: Платформа:Локация1,Локация2,... (например, Яндекс.Директ:/ru). Поиск: Введите локацию (например, /ru/svrd/revda) и нажмите Поиск, чтобы увидеть соответствующие площадки.
-API:
 
-1. POST /api/advertising/load: Загрузите файл с помощью curl: curl -X POST -F "file=@data.txt" http://localhost:5000/api/advertising/load
-2. GET /api/advertising/search: Запросите площадки для локации: curl http://localhost:5000/api/advertising/search?location=/ru/svrd/revda
+2. API:
+
+2.1. POST /api/advertising/load: Загрузите файл с помощью curl: curl -X POST -F "file=@data.txt" http://localhost:5000/api/advertising/load
+2.2. GET /api/advertising/search: Запросите площадки для локации: curl http://localhost:5000/api/advertising/search?location=/ru/svrd/revda
 
 Формат файла
 
