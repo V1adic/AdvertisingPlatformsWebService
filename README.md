@@ -1,0 +1,2 @@
+# AdvertisingPlatformsWebService
+ Test example
