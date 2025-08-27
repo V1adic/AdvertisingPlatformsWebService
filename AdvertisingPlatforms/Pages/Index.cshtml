@@ -1,0 +1,138 @@
+﻿@page
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рекламные платформы</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="container mx-auto max-w-lg p-6 bg-white rounded-lg shadow-lg">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Рекламные платформы</h1>
+
+        <!-- Load Data Section -->
+        <div class="mb-8">
+            <h3 class="text-xl font-semibold text-gray-700 mb-4 text-center">Загрузка данных</h3>
+            <div id="dropZone" class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center bg-gray-50 hover:bg-gray-100 transition">
+                <p class="text-gray-500">Drag&Drop. Перетащите файл или нажмите, чтобы выбрать</p>
+                <input type="file" id="file" name="file" accept=".txt" class="hidden" />
+            </div>
+            <button id="uploadButton" class="mt-4 w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition">Загрузка файла</button>
+        </div>
+
+        <!-- Search Section -->
+        <div class="mb-8">
+            <h3 class="text-xl font-semibold text-gray-700 mb-4 text-center">Поиск платформ</h3>
+            <div class="flex gap-2">
+                <input type="text" id="location" placeholder="/ru/svrd/revda" class="flex-1 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                <button onclick="search()" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition">Поиск</button>
+            </div>
+        </div>
+
+        <!-- Result Section -->
+        <div id="result" class="text-gray-700"></div>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById("dropZone");
+        const fileInput = document.getElementById("file");
+        const uploadButton = document.getElementById("uploadButton");
+        const resultDiv = document.getElementById("result");
+
+        // Drag&Drop обработчик
+        dropZone.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            dropZone.classList.add("border-blue-500", "bg-blue-50");
+        });
+
+        dropZone.addEventListener("dragleave", () => {
+            dropZone.classList.remove("border-blue-500", "bg-blue-50");
+        });
+
+        dropZone.addEventListener("drop", (e) => {
+            e.preventDefault();
+            dropZone.classList.remove("border-blue-500", "bg-blue-50");
+            const file = e.dataTransfer.files[0];
+            if (file && file.type === "text/plain") {
+                fileInput.files = e.dataTransfer.files;
+                resultDiv.innerText = `Выбранный файл: ${file.name}`;
+            } else {
+                resultDiv.innerText = "Пожалуйста выберите другой файл";
+            }
+        });
+
+        // Обработчик нажатия на Drag&Drop
+        dropZone.addEventListener("click", () => fileInput.click());
+
+        fileInput.addEventListener("change", () => {
+            if (fileInput.files[0]) {
+                resultDiv.innerText = `Выбранный файл: ${fileInput.files[0].name}`;
+            }
+        });
+
+        // Обработчик загрузки
+        uploadButton.addEventListener("click", async () => {
+            if (!fileInput.files[0]) {
+                resultDiv.innerText = "Пожалуйста выберите другой файл";
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+
+            try {
+                const response = await fetch("/api/advertising/load", {
+                    method: "POST",
+                    body: formData
+                });
+
+                let result;
+                try {
+                    result = await response.json();
+                } catch (jsonError) {
+                    resultDiv.innerText = `Error parsing response: ${jsonError.message}`;
+                    return;
+                }
+
+                resultDiv.innerText = response.ok
+                    ? result.message
+                    : `Error: ${result.message}`;
+            } catch (error) {
+                resultDiv.innerText = `Network error: ${error.message}`;
+            }
+        });
+
+        // Обработчик поиска
+        async function search() {
+            const location = document.getElementById("location").value;
+            if (!location) {
+                resultDiv.innerText = "Пожалуйста введите локацию";
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/advertising/search?location=${encodeURIComponent(location)}`);
+
+                let result;
+                try {
+                    result = await response.json();
+                } catch (jsonError) {
+                    resultDiv.innerText = `Error parsing response: ${jsonError.message}`;
+                    return;
+                }
+
+                if (response.ok) {
+                    resultDiv.innerText = result.platforms.length > 0
+                        ? `Платформы: ${result.platforms.join(", ")}`
+                        : "Нет рекламных платформ для выбранной локации";
+                } else {
+                    resultDiv.innerText = `Error: ${result.message}`;
+                }
+            } catch (error) {
+                resultDiv.innerText = `Network error: ${error.message}`;
+            }
+        }
+    </script>
+</body>
+</html>

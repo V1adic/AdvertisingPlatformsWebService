@@ -1,0 +1,28 @@
+[
+  {
+    "ContainingType": "AdvertisingPlatforms.Controllers.AdvertisingController",
+    "Method": "Load",
+    "RelativePath": "api/Advertising/load",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "AdvertisingPlatforms.Controllers.AdvertisingController",
+    "Method": "Search",
+    "RelativePath": "api/Advertising/search",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "location",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
