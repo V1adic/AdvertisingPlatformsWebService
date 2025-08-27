@@ -15,7 +15,7 @@
 Как запустить
 
 Склонируйте репозиторий:
-1. git clone https://github.com/V1adic/AdvertisingPlatformsWebService repository-directory
+1. git clone https://github.com/V1adic/AdvertisingPlatformsWebService.git repository-directory
 1. cd repository-directory
 
 Восстановите зависимости и выполните сборку: 
